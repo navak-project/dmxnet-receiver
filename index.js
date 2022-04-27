@@ -11,18 +11,41 @@ var receiver = dmxnet.newReceiver({
   net: 0,
 });
 
-// Dump data if DMX Data is received
-receiver.on('data', function (data) {
- // console.log('DMX data:', data); // eslint-disable-line no-console
+var receiver2 = dmxnet.newReceiver({
+  subnet: 15,
+  universe: 11,
+  net: 0,
 });
 
-const ws281x = require('rpi-ws281x-native');
+const ws281x = require('@gbkwiatt/node-rpi-ws281x-native');
 
-const channel = ws281x(100, { stripType: 'ws2812' });
+const options = {
+  dma: 10,
+  freq: 800000,
+  gpio: 18,
+  invert: false,
+  brightness: 255,
+  stripType: ws281x.stripType.WS2812
+};
 
-const colorArray = channel.array;
-for (let i = 0; i < channel.count; i++) {
-  colorsArray[i] = 0xffcc22;
+const channel = ws281x(512, options);
+const colors = channel.array;
+
+let offset = 0;
+receiver.on('data', function (data) {
+  for (let i = 0; i < data.length / 3; i++) {
+    colors[i] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
+  }
+  ws281x.render();
+});
+
+receiver2.on('data', function (data) {
+  for (let i = 0; i < data.length / 3; i++) {
+    colors[i+380] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
+  }
+  ws281x.render();
+});
+
+function rgb2Int(r, g, b) {
+  return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
 }
-
-ws281x.render();
