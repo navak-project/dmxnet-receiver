@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "dmxnet": "^0.8.0"
+  }
+}
