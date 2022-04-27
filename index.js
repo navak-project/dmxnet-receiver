@@ -52,7 +52,7 @@ receiver2.on('data', function (data) {
 // 60fps interval
 setInterval(function () {
   ws281x.render();
-}, 1000 / 60);
+}, 1000 / 144);
 
 function rgb2Int(r, g, b) {
   return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
