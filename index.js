@@ -31,7 +31,7 @@ const options = {
   stripType: ws281x.stripType.WS2812
 };
 
-const channel = ws281x(256, options);
+const channel = ws281x(512, options);
 const colors = channel.array;
 
 let offset = 0;
