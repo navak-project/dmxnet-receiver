@@ -1,6 +1,8 @@
 'use strict';
 // Load dmxnet as libary
 var dmxlib = require('./lib.js');
+const ws281x = require('@gbkwiatt/node-rpi-ws281x-native');
+
 // Create new dmxnet instance
 var dmxnet = new dmxlib.dmxnet({});
 
@@ -17,7 +19,8 @@ var receiver2 = dmxnet.newReceiver({
   net: 0,
 });
 
-const ws281x = require('@gbkwiatt/node-rpi-ws281x-native');
+let _DATA1;
+let _DATA2;
 
 const options = {
   dma: 10,
@@ -32,16 +35,17 @@ const channel = ws281x(512, options);
 const colors = channel.array;
 
 let offset = 0;
-receiver.on('data', function (data) {
+/*receiver.on('data', function (data) {
+  
   for (let i = 0; i < data.length / 3; i++) {
     colors[i] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
   }
   ws281x.render();
-});
+});*/
 
 receiver2.on('data', function (data) {
   for (let i = 0; i < data.length / 3; i++) {
-    colors[i+380] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
+    colors[i + 256] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
   }
   ws281x.render();
 });
