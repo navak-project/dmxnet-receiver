@@ -31,21 +31,24 @@ const options = {
   stripType: ws281x.stripType.WS2812
 };
 
-const channel = ws281x(512, options);
+const channel = ws281x(256, options);
 const colors = channel.array;
 
+const channel2 = ws281x(256, options);
+const colors2 = channel2.array;
+
 let offset = 0;
-/*receiver.on('data', function (data) {
+receiver.on('data', function (data) {
   
   for (let i = 0; i < data.length / 3; i++) {
     colors[i] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
   }
   ws281x.render();
-});*/
+});
 
 receiver2.on('data', function (data) {
   for (let i = 0; i < data.length / 3; i++) {
-    colors[i + 256] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
+    colors2[i + 256] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
   }
   ws281x.render();
 });
