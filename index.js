@@ -40,16 +40,19 @@ receiver.on('data', function (data) {
   for (let i = 0; i < data.length / 3; i++) {
     colors[i] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
   }
-  ws281x.render();
+
 });
 
 receiver2.on('data', function (data) {
   for (let i = 0; i < data.length / 3; i++) {
-    colors[i + 256] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
+    colors[i + 170] = rgb2Int(data[i * 3], data[i * 3 + 1], data[i * 3 + 2]);
   }
-  ws281x.render();
+  
 });
-
+// 60fps interval
+setInterval(function () {
+  ws281x.render();
+}, 1000 / 60);
 
 function rgb2Int(r, g, b) {
   return ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
